@@ -15,7 +15,7 @@
 }
 
 .btn:hover {
-    background: var(--primary-gradient);
-    transform: translateY(-2px);
+    background: linear-gradient(120deg, rgba(40, 20, 60, 0.6), rgba(30, 30, 80, 0.4));
+    transform: translateY(-1px);
     box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15), 0 3px 6px rgba(0, 0, 0, 0.1);
 }
