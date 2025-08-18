@@ -1,0 +1,153 @@
+.hero-details {
+    display: flex;
+    flex-direction: row;
+    gap: 32px;
+    align-items: flex-start;
+    width: 100%;
+}
+.hero-main-column {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    flex: 1 1 0;
+    min-width: 0;
+}
+
+.hero-card {
+    padding: 48px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 40px;
+    align-items: center;
+    animation: fadeInUp 0.8s ease-out;
+}
+
+.name {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, #fff 0%, rgba(255, 255, 255, 0.8) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.description {
+    font-size: 1.2rem;
+    margin-bottom: 32px;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 400;
+}
+
+.social-links {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.social-link {
+    padding: 12px 20px;
+    background: rgba(10, 18, 40, 0.85);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 15px;
+    position: relative;
+    overflow: visible;
+    box-shadow: 0 2px 16px 0 rgba(31, 38, 135, 0.12);
+    transition: background 0.18s, transform 0.18s;
+}
+/* Modern underline effect under text */
+.social-link span {
+    position: relative;
+    z-index: 1;
+    display: inline-block;
+}
+.social-link span::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, #fff 0%, #667eea 100%);
+    border-radius: 1px;
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    opacity: 0.7;
+    transition: height 0.18s, opacity 0.18s;
+}
+.social-link:hover {
+    background: rgba(20, 30, 60, 0.95);
+    transform: translateY(-1px) scale(1.03);
+}
+.social-link:hover span::after {
+    height: 3px;
+    opacity: 1;
+}
+
+@media (max-width: 900px) {
+    .hero-details {
+        flex-direction: column;
+        gap: 24px;
+    }
+    .hero-card {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+@media (max-width: 768px) {
+    .hero-card {
+        grid-template-columns: 1fr;
+        gap: 32px;
+        padding: 32px 24px;
+        text-align: center;
+    }
+
+    .avatar {
+        width: 140px;
+        height: 140px;
+        margin: 0 auto;
+        font-size: 40px;
+    }
+
+    .name {
+        font-size: 2rem;
+    }
+
+    .description {
+        font-size: 1.1rem;
+    }
+
+    .social-links {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-card {
+        padding: 24px 16px;
+    }
+
+    .avatar {
+        width: 120px;
+        height: 120px;
+        font-size: 32px;
+    }
+
+    .name {
+        font-size: 1.8rem;
+    }
+
+    .social-links {
+        gap: 12px;
+    }
+
+    .social-link {
+        padding: 10px 16px;
+        font-size: 13px;
+    }
+}

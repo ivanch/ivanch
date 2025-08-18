@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ivanch - Portfolio</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/button.css">
+    <link rel="stylesheet" href="css/matrix.css">
+    <link rel="stylesheet" href="css/content.css">
+    
+    <link rel="stylesheet" href="css/sections/profile.css">
+
+    <link rel="stylesheet" href="css/sections/hero.css">
+    <link rel="stylesheet" href="css/sections/projects.css">
+    <link rel="stylesheet" href="css/sections/homelab.css">
+    <!-- Remix Icon CDN for social icons -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Matrix-like background animation -->
+    <div class="matrix-canvas" id="matrixCanvas"></div>
+
+    <!-- Main hero section -->
+    <main class="main-container">
+        <div class="hero-card glass">
+            <div class="profile-container">
+                <div class="avatar">
+                    <img src="/assets/lain.png" alt="Avatar" />
+                </div>
+                <div class="profile-info">
+                    <div class="profile-info-item">
+                        <i class="ri-graduation-cap-fill"></i>
+                        <span class="profile-info-value">
+                            <span>UTFPR</span>
+                            <span>Informations Systems</span>
+                        </span>
+                    </div>
+                    <div class="profile-info-item">
+                        <i class="ri-building-2-fill"></i>
+                        <span class="profile-info-value">
+                            <span>EposNow</span>
+                            <span>Software Engineer</span>
+                        </span>
+                    </div>
+                    <div class="profile-info-item">
+                        <i class="ri-book-2-fill"></i>
+                        <span class="profile-info-value">5+ years</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-details">
+                <div class="hero-main-column">
+                    <div class="content">
+                        <h2 class="name">ivanch</h2>
+                        <p class="description">Developer and Self Hoster</p>
+                        <div class="social-links">
+                            <a href="https://www.linkedin.com/in/joseivanch/" class="social-link" target="_blank">
+                                <i class="ri-linkedin-fill"></i> <span>LinkedIn</span>
+                            </a>
+                            <a href="#" class="social-link" id="email-link">
+                                <i class="ri-mail-fill"></i> <span>Email</span>
+                            </a>
+                            <span class="email-tooltip" id="email-tooltip">Copied!</span>
+                            <a href="https://github.com/ivanch" class="social-link" target="_blank">
+                                <i class="ri-github-fill"></i> <span>GitHub</span>
+                            </a>
+                            <a href="https://git.ivanch.me/ivanch" class="social-link" target="_blank">
+                                <i class="ri-git-repository-fill"></i> <span>Gitea</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="homelab-section">
+                        <h3 class="homelab-title">Homelab</h3>
+                        <div class="homelab-buttons">
+                            <a href="#" class="homelab-btn">Diagram</a>
+                            <a href="#" class="homelab-btn">Main Applications</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="projects-section">
+                    <h3 class="projects-title">Projects</h3>
+                    <div class="project">
+                        <div class="project-title">OpenCand</div>
+                        <div class="project-desc">Brazilian Candidate Viewer.</div>
+                    </div>
+                    <div class="project">
+                        <div class="project-title">Vision Start</div>
+                        <div class="project-desc">Chrome Startpage.</div>
+                    </div>
+                    <div class="project">
+                        <div class="project-title">Kasbot</div>
+                        <div class="project-desc">Discord DJ bot.</div>
+                    </div>
+                    <div class="project">
+                        <div class="project-title">Candlebright</div>
+                        <div class="project-desc">C++ project game.</div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/matrix.js"></script>
+    <script src="js/social.js"></script>
+</body>
+</html>
