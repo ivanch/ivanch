@@ -42,27 +42,3 @@
     gap: 16px;
     flex-wrap: wrap;
 }
-.homelab-btn {
-    padding: 12px 28px;
-    background: rgba(10, 18, 40, 0.85);
-    color: #fff;
-    border: none;
-    border-radius: 14px;
-    font-weight: 600;
-    font-size: 15px;
-    letter-spacing: 0.02em;
-    text-decoration: none;
-    box-shadow: 0 4px 24px 0 rgba(31, 38, 135, 0.18), 0 1.5px 0 rgba(255,255,255,0.08);
-    transition: transform 0.18s cubic-bezier(0.4, 0, 0.2, 1), background 0.18s;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-}
-.homelab-btn:hover {
-    background: rgba(20, 30, 60, 0.95);
-    transform: translateY(-2px) scale(1.04);
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.28);
-}
-.homelab-btn:active {
-    transform: translateY(0px) scale(1.0);
-}

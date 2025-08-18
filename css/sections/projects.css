@@ -1,3 +1,4 @@
+
 .projects-section {
     flex: 0 0 340px;
     display: flex;
@@ -7,7 +8,7 @@
     background: rgba(20, 20, 30, 0.10);
     backdrop-filter: blur(24px) saturate(140%) brightness(1.08);
     -webkit-backdrop-filter: blur(24px) saturate(140%) brightness(1.08);
-    border-radius: 24px;
+    border-radius: var(--border-radius-large);
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18), inset 0 1px 0 rgba(255,255,255,0.10);
     min-width: 280px;
     max-width: 340px;
@@ -19,9 +20,9 @@
     font-size: 1.6rem;
     font-weight: 700;
     margin-bottom: 10px;
-    color: #fff;
+    color: var(--text-color);
     letter-spacing: 0.03em;
-    background: linear-gradient(135deg, #667eea 0%, #fff 100%);
+    background: linear-gradient(135deg, var(--secondary-color) 0%, var(--text-color) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -29,7 +30,7 @@
 
 .project {
     padding: 18px 16px;
-    border-radius: 16px;
+    border-radius: var(--border-radius);
     box-shadow: 0 2px 12px 0 rgba(31, 38, 135, 0.10);
     margin-bottom: 0;
     display: flex;
@@ -47,10 +48,10 @@
 .project-title {
     font-size: 1.15rem;
     font-weight: 600;
-    color: #fff;
+    color: var(--text-color);
     margin-bottom: 2px;
     letter-spacing: 0.01em;
-    background: linear-gradient(90deg, #fff 0%, #667eea 100%);
+    background: linear-gradient(90deg, var(--text-color) 0%, var(--secondary-color) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -58,10 +59,11 @@
 
 .project-desc {
     font-size: 0.98rem;
-    color: rgba(255,255,255,0.85);
+    color: var(--text-color-light);
     font-weight: 400;
     line-height: 1.5;
 }
+
 
 @media (max-width: 900px) {
     .projects-section {
