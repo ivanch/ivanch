@@ -44,7 +44,8 @@ img {
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     border-radius: var(--border-radius);
-    border: 1px solid var(--glass-border);
+    border-top: 1px solid var(--glass-border);
+    border-bottom: 1px solid var(--glass-border);
     box-shadow: var(--box-shadow), var(--inset-shadow);
 }
 
