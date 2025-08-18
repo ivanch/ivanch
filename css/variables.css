@@ -4,7 +4,9 @@
     --primary-color-light: #81d4fa;
     --secondary-color: #667eea;
     --tertiary-color: #764ba2;
-    --primary-gradient: linear-gradient(120deg, rgba(30, 10, 50, 0.6), rgba(10, 10, 40, 0.4));
+    
+    --button-gradient: linear-gradient(120deg, rgba(30, 10, 50, 0.5), rgba(10, 10, 40, 0.4));
+    --button-hover-gradient: linear-gradient(120deg, rgba(30, 10, 50, 0.75), rgba(10, 10, 40, 0.4));
 
     --background-color: #000000;
     --glass-background: rgba(20, 20, 20, 0.125);
