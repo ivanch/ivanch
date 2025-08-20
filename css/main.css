@@ -15,7 +15,12 @@ body {
     position: relative;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     font-weight: 600;
     color: var(--text-color);
 }
@@ -46,7 +51,11 @@ img {
     border-radius: var(--border-radius);
     border-top: 1px solid var(--glass-border);
     border-bottom: 1px solid var(--glass-border);
-    box-shadow: var(--box-shadow), var(--inset-shadow);
+    /* base shadows: outer shadow from variables + subtle inset
+         an extra animated outer shadow is layered to give a natural "alive" feel */
+    box-shadow: 0 8px 36px 0 var(--glass-shadow), var(--inset-shadow);
+    will-change: box-shadow;
+    animation: glass-shadow 8s ease-in-out infinite !important;
 }
 
 .main-container {
@@ -67,9 +76,33 @@ img {
         opacity: 0;
         transform: translateY(30px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+/* subtle, natural moving/pulsing shadow for .glass */
+@keyframes glass-shadow {
+    0% {
+        box-shadow: 0 6px 24px -2px var(--glass-shadow), 0 18px 48px -12px var(--dark-shadow-15), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+
+    25% {
+        box-shadow: 6px 10px 38px -6px var(--tertiary-color-20), 0 22px 60px -18px var(--dark-shadow-18), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+
+    50% {
+        box-shadow: 0 8px 36px 0 var(--glass-shadow), 0 28px 72px -24px var(--dark-shadow-20), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+
+    75% {
+        box-shadow: -6px 10px 38px -6px var(--primary-color-16), 0 22px 60px -18px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+
+    100% {
+        box-shadow: 0 6px 24px -2px var(--glass-shadow), 0 18px 48px -12px var(--dark-shadow-15), inset 0 1px 0 rgba(255, 255, 255, 0.1);
     }
 }
 
@@ -79,7 +112,7 @@ img {
     backdrop-filter: blur(32px) saturate(180%) brightness(1.1);
     -webkit-backdrop-filter: blur(32px) saturate(180%) brightness(1.1);
     border-radius: var(--border-radius-large);
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.25), inset 0 1px 0 rgba(255,255,255,0.15);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
     padding: 32px 24px;
     transition: background 0.3s, box-shadow 0.3s;
     min-width: 26rem;
@@ -95,5 +128,12 @@ img {
 @media (max-width: 480px) {
     body {
         font-size: 14px;
+    }
+}
+
+/* Accessibility: disable animated shadows for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .glass {
+        animation: none !important;
     }
 }

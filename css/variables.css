@@ -24,4 +24,10 @@
 
     --box-shadow: 0 8px 36px 0px var(--glass-shadow);
     --inset-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    /* semi-transparent helpers for animated shadows */
+    --primary-color-16: rgba(55, 187, 248, 0.16);
+    --tertiary-color-20: rgba(106, 50, 161, 0.2);
+    --dark-shadow-15: rgba(0,0,0,0.15);
+    --dark-shadow-18: rgba(0,0,0,0.18);
+    --dark-shadow-20: rgba(0,0,0,0.20);
 }
