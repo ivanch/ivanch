@@ -1,0 +1,58 @@
+name: Homepage Build and Deploy
+
+on:
+  push:
+  workflow_dispatch:
+
+env:
+  REGISTRY_HOST: git.ivanch.me
+  REGISTRY_USERNAME: ivanch
+  IMAGE_NAME: ${{ env.REGISTRY_HOST }}/ivanch/mainpage
+
+jobs:
+  build_ivanch_me:
+    name: Build Homepage Image
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+      - name: Log in to Container Registry
+        run: |
+          echo "${{ secrets.REGISTRY_PASSWORD }}" \
+            | docker login "${{ env.REGISTRY_HOST }}" \
+                -u "${{ env.REGISTRY_USERNAME }}" \
+                --password-stdin
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and Push Multi-Arch Image
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          context: .
+          platforms: linux/amd64,linux/arm64
+          tags: |
+            ${{ env.IMAGE_NAME }}:latest
+
+  deploy_ivanch_me:
+    name: Deploy Homepage
+    runs-on: ubuntu-amd64
+    needs: build_ivanch_me
+    steps:
+      - name: Recreate Container
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            cd ${{ secrets.DIR }}
+            docker compose pull
+            docker compose up -d --force-recreate
