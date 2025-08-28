@@ -13,6 +13,12 @@ body {
     min-height: 100vh;
     overflow-x: hidden;
     position: relative;
+    /* Improve text rendering on mobile */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* Prevent text size adjust on orientation change */
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
 }
 
 h1,
@@ -119,9 +125,26 @@ img {
     max-width: 26rem;
 }
 
-@media (max-width: 768px) {
+/* Mobile responsive content */
+@media (max-width: 1024px) {
+    .content {
+        min-width: unset;
+        max-width: unset;
+        width: 100%;
+        padding: 24px 20px;
+    }
+
     .main-container {
-        padding: 0 15px;
+        position: relative;
+        top: auto;
+        left: auto;
+        transform: none;
+        padding: 20px 15px;
+        min-height: 100vh;
+        display: flex;
+        align-items: flex-start;
+        padding-top: 40px;
+        padding-bottom: 40px;
     }
 }
 
@@ -129,11 +152,43 @@ img {
     body {
         font-size: 14px;
     }
+    
+    .main-container {
+        padding: 15px 10px;
+        padding-top: 30px;
+        padding-bottom: 30px;
+    }
+
+    .content {
+        padding: 20px 16px;
+        min-width: unset;
+        max-width: unset;
+        width: 100%;
+    }
 }
 
 /* Accessibility: disable animated shadows for users who prefer reduced motion */
 @media (prefers-reduced-motion: reduce) {
     .glass {
         animation: none !important;
+    }
+}
+
+/* High DPI display optimizations */
+@media only screen and (-webkit-min-device-pixel-ratio: 2),
+       only screen and (min--moz-device-pixel-ratio: 2),
+       only screen and (-o-min-device-pixel-ratio: 2/1),
+       only screen and (min-device-pixel-ratio: 2),
+       only screen and (min-resolution: 192dpi),
+       only screen and (min-resolution: 2dppx) {
+    .glass {
+        /* Enhanced blur for high DPI screens */
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+    }
+    
+    .content {
+        backdrop-filter: blur(40px) saturate(180%) brightness(1.1);
+        -webkit-backdrop-filter: blur(40px) saturate(180%) brightness(1.1);
     }
 }

@@ -66,12 +66,24 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 8px;
 }
 
 .project-icons {
     display: flex;
     gap: 8px;
     align-items: center;
+    flex: 0 0 auto;
+    flex-wrap: nowrap;
+}
+
+/* Ensure long titles don't push icons to a new line */
+.project-title > span:first-child {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .project-icon-link {
@@ -94,12 +106,66 @@
 }
 
 
-@media (max-width: 900px) {
+@media (max-width: 1024px) {
     .projects-section {
         flex: unset;
         max-width: 100%;
         margin-left: 0;
         margin-top: 24px;
-        max-width: 100%;
+        min-width: unset;
+    }
+}
+
+@media (max-width: 768px) {
+    .projects-section {
+        padding: 28px 20px;
+        gap: 16px;
+    }
+    
+    .projects-title {
+        font-size: 1.5rem;
+        text-align: center;
+        margin-bottom: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .projects-section {
+        padding: 24px 16px;
+        gap: 14px;
+    }
+    
+    .projects-title {
+        font-size: 1.4rem;
+    }
+    
+    .project {
+        padding: 16px 14px;
+    }
+    
+    .project-title {
+        font-size: 1.1rem;
+    }
+    
+    .project-desc {
+        font-size: 0.95rem;
+    }
+    
+    .project-icons {
+        gap: 6px;
+    }
+}
+
+@media (max-width: 380px) {
+    .project {
+        padding: 14px 12px;
+    }
+    
+    .project-title {
+        font-size: 1.05rem;
+        /* Keep a single row layout even on very small screens */
+        flex-direction: row;
+        align-items: center;
+        gap: 8px;
     }
 }

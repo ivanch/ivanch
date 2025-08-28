@@ -12,10 +12,31 @@
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px; /* Minimum touch target size for mobile */
+    text-align: center;
 }
 
 .btn:hover {
     background: var(--button-hover-gradient);
     transform: translateY(-1px);
     box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15), 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Mobile button improvements */
+@media (max-width: 768px) {
+    .btn {
+        min-height: 48px;
+        padding: 12px 20px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .btn {
+        padding: 10px 16px;
+        font-size: 13px;
+    }
 }

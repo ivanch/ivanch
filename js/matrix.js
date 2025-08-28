@@ -5,11 +5,11 @@ class MatrixBackground {
         this.dots = [];
         this.connections = [];
         this.config = {
-            dotCount: 50,
+            dotCount: this.getMobileDotCount(),
             dotSpeed: 0.2,
             connectionDuration: { min: 2000, max: 6000 },
             connectionChance: 0.0002,
-            maxConnections: 8,
+            maxConnections: this.getMobileMaxConnections(),
             dotSize: 3,
             colors: {
                 dotDefault: 'rgba(255, 255, 255, 0.8)',
@@ -27,6 +27,20 @@ class MatrixBackground {
         this.init();
     }
 
+    getMobileDotCount() {
+        // Reduce dot count on mobile devices for better performance
+        if (window.innerWidth <= 480) return 25;
+        if (window.innerWidth <= 768) return 35;
+        return 50;
+    }
+
+    getMobileMaxConnections() {
+        // Reduce max connections on mobile devices
+        if (window.innerWidth <= 480) return 4;
+        if (window.innerWidth <= 768) return 6;
+        return 8;
+    }
+
     init() {
         this.handleResize();
         this.animate();
@@ -36,6 +50,11 @@ class MatrixBackground {
     handleResize() {
         this.canvas.width = window.innerWidth;
         this.canvas.height = window.innerHeight;
+        
+        // Update mobile-specific configurations
+        this.config.dotCount = this.getMobileDotCount();
+        this.config.maxConnections = this.getMobileMaxConnections();
+        
         this.createDots();
     }
 
