@@ -80,7 +80,7 @@
 }
 
 .description {
-    font-size: 1.2rem;
+    font-size: 1rem;
     margin-bottom: 32px;
     color: var(--text-color-light);
     font-weight: 400;
@@ -146,7 +146,6 @@
     }
 
     .description {
-        font-size: 1.1rem;
         margin-bottom: 24px;
     }
 
@@ -166,7 +165,6 @@
     }
     
     .description {
-        font-size: 1rem;
         margin-bottom: 20px;
     }
 
