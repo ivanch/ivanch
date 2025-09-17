@@ -1,16 +1,62 @@
-## Hi there 👋
+<h1 align="center" style="font-family: 'Courier New', monospace;">
+  Hey there, I'm José - <em>ivanch</em>
+</h1>
 
-<!--
-**ivanch/ivanch** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+> .NET Core | DevOps | Self-hosted Enthusiast
 
-Here are some ideas to get you started:
+I build secure and scalable systems and automate processes that rarely breaks at 3 a.m.  
+Currently crafting code, CI/CD pipelines, managing Kubernetes clusters and also contributing to some open-source projects
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+---
+
+<p align="center" style="margin-top: 25px;">
+  <img src="https://img.shields.io/badge/.NET_Core-512BD4?logo=.net&logoColor=white" alt=".NET Core"/>
+  <img src="https://img.shields.io/badge/React-20232A?logo=react&logoColor=61DAFB" alt="React"/>
+  <img src="https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white" alt="HTML5"/>
+  <img src="https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white" alt="CSS3"/>
+  <br>
+  <img src="https://img.shields.io/badge/PostgreSQL-4169E1?logo=postgresql&logoColor=white" alt="PostgreSQL"/>
+  <img src="https://img.shields.io/badge/MySQL-4479A1?logo=mysql&logoColor=white" alt="MySQL"/>
+  <br>
+  <img src="https://img.shields.io/badge/Linux-FCC624?logo=linux&logoColor=black" alt="Linux"/>
+  <img src="https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white" alt="Docker"/>
+  <img src="https://img.shields.io/badge/Kubernetes-326CE5?logo=kubernetes&logoColor=white" alt="Kubernetes"/>
+  <img src="https://img.shields.io/badge/Terraform-623CE4?logo=terraform&logoColor=white" alt="Terraform"/>
+  <img src="https://img.shields.io/badge/GitHub_Actions-2088FF?logo=github-actions&logoColor=white" alt="GitHub Actions"/>
+</p>
+
+---
+
+<h3 align="center"> 🚀 Featured Projects </h3>
+
+- 🔍 **[OpenCand](https://github.com/ivanch/opencand)** - [opencand.com.br](https://opencand.com)  
+  Simple Brazilian candidate data viewer and searcher, made with .NET Core and React
+
+- ⚡️ **[Haven - personal homelab](https://github.com/ivanch/haven)**  
+  Bare-metal Kubernetes cluster using k3s and some other Docker containers, and some sorcery
+
+- 🎶 **[Kasbot](https://github.com/ivanch/kasbot)**  
+  Discord bot inspired by a Brazilian DJ
+
+<!-- 
+---
+
+<h3 align="center"> 🌐 Contacts and socials </h3>
+
+<p align="center">
+    <a href="https://www.linkedin.com/in/joseivanch/">
+        <img src="https://img.shields.io/badge/LinkedIn-0A66C2?logo=linkedin&logoColor=white" alt="LinkedIn"/>
+    </a>
+    <a href="https://last.fm/user/ivanch">
+        <img src="https://img.shields.io/badge/Last.fm-D51007?logo=lastdotfm&logoColor=white" alt="Last.fm"/>
+    </a>
+    <a href="https://git.ivanch.me/ivanch">
+        <img src="https://img.shields.io/badge/Gitea-007300?logo=gitea&logoColor=white" alt="Gitea"/>
+    </a>
+    <a href="mailto:jose.henrique.ivan@gmail.com">
+        <img src="https://img.shields.io/badge/Email-333333?logo=gmail&logoColor=white" alt="Email"/>
+    </a>
+    <a href="https://blog.ivanch.me/">
+        <img src="https://img.shields.io/badge/Blog-9aa500?logo=blogger&logoColor=white" alt="Blog"/>
+    </a>
+</p> -->
