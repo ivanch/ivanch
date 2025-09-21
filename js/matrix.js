@@ -17,9 +17,9 @@ class MatrixBackground {
                 dotConnected: 'rgba(100, 149, 237, 0.8)',
                 dotConnectedGlow: 'rgba(100, 149, 237, 0.6)',
                 connection: {
-                    start: 'rgba(100, 149, 237, 0)',
-                    middle: 'rgba(138, 43, 226, 0.8)',
-                    end: 'rgba(100, 149, 237, 0)'
+                    start: 'rgba(100, 149, 237, 0.2)',
+                    middle: 'rgba(138, 43, 226, 0.6)',
+                    end: 'rgba(100, 149, 237, 0.2)'
                 }
             }
         };
@@ -44,7 +44,9 @@ class MatrixBackground {
     init() {
         this.handleResize();
         this.animate();
-        window.addEventListener('resize', () => this.handleResize());
+
+        // Prevent resizing for mobile performance reasons
+        // window.addEventListener('resize', () => this.handleResize());
     }
 
     handleResize() {
