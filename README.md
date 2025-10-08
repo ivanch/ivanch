@@ -4,8 +4,8 @@
 
 <p align="center"> .NET Core | DevOps | Self-hosted Enthusiast </p>
 
-I build secure and scalable systems and automate processes that rarely breaks at 3 a.m.
-Currently crafting code, CI/CD pipelines, managing Kubernetes clusters and also contributing to some open-source projects
+I build secure & reliable systems and automate processes that rarely breaks at 3 a.m.
+Currently crafting code, CI/CD pipelines, managing Kubernetes clusters and also contributing to some open-source projects.
 
 ---
 
