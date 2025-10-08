@@ -4,7 +4,7 @@
 
 <p align="center"> .NET Core | DevOps | Self-hosted Enthusiast </p>
 
-I build secure and scalable systems and automate processes that rarely breaks at 3 a.m.  
+I build secure and scalable systems and automate processes that rarely breaks at 3 a.m.
 Currently crafting code, CI/CD pipelines, managing Kubernetes clusters and also contributing to some open-source projects
 
 ---
@@ -32,10 +32,13 @@ Currently crafting code, CI/CD pipelines, managing Kubernetes clusters and also 
 
 <h3 align="center"> 🚀 Featured Projects </h3>
 
-- 🔍 **[OpenCand](https://github.com/ivanch/opencand)** - [opencand.com.br](https://opencand.com)  
+- 🔍 **[OpenCand](https://github.com/ivanch/opencand)** - [opencand.ivanch.me](https://opencand.ivanch.me)  
   Simple Brazilian candidate data viewer and searcher, made with .NET Core and React
 
-- ⚡️ **[Haven](https://github.com/ivanch/haven)** - personal homelab  
+- 📃 **[Vision Start](https://github.com/ivanch/vision-start)**  
+  A glassmorphism-looking like, modern and customizable Chrome startpage
+
+- ⚡️ **[Haven](https://github.com/ivanch/haven)** - *personal homelab*  
   Bare-metal Kubernetes cluster using k3s, some other Docker containers, and some sorcery
 
 - 🎶 **[Kasbot](https://github.com/ivanch/kasbot)**  
