@@ -35,7 +35,7 @@ class MatrixBackground {
     }
 
     getMobileMaxConnections() {
-        // Reduce max connections on mobile devices
+        // Reduce max connections on mobile devices for better performance
         if (window.innerWidth <= 480) return 4;
         if (window.innerWidth <= 768) return 6;
         return 8;
