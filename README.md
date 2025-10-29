@@ -1,11 +1,11 @@
 <h1 align="center">
-  Hey there, I'm José - <em>ivanch</em>
+  Hey there, I'm José 👋
 </h1>
 
 <p align="center"> .NET Core | DevOps | Self-hosted Enthusiast </p>
 
-I build secure & reliable systems and automate processes that rarely breaks at 3 a.m.
-Currently crafting code, CI/CD pipelines, managing Kubernetes clusters and also contributing to some open-source projects.
+I design and automate resilient systems ensuring rapid delivery and rock‑solid reliability.
+Passionate about building robust code, streamlining CI/CD, orchestrating Kubernetes, and contributing to open-source.
 
 ---
 
