@@ -1,20 +1,20 @@
-FROM nginx:alpine-slim
+FROM node:alpine AS build
 
-# Copy custom nginx configuration
+WORKDIR /src
+
+COPY . /src
+
+# Install terser to minify JS files
+RUN npm install -g terser
+RUN if [ -d "js" ]; then find js -type f -name "*.js" -exec sh -c 'for f; do terser "$f" -c -m -o "$f"; done' sh {} +; fi
+
+FROM nginx:alpine-slim AS final
+
 COPY nginx.conf /etc/nginx/nginx.conf
 
-# Copy website files
 COPY . /usr/share/nginx/html
 
-# Copy minify script and make it executable
-COPY ./utils/minify.sh /tmp/minify.sh
-RUN chmod +x /tmp/minify.sh
-
-# Minify all JavaScript files in-place
-RUN find /usr/share/nginx/html -name "*.js" -type f -exec sh /tmp/minify.sh {} \; && \
-    rm -r /tmp && \
-    rm -r /usr/share/nginx/html/.git && \
-    rm -r /usr/share/nginx/html/utils
+COPY --from=build /src/js /usr/share/nginx/html/js
 
 EXPOSE 80
 
