@@ -11,7 +11,7 @@ COPY ./utils/minify.sh /tmp/minify.sh
 RUN chmod +x /tmp/minify.sh
 
 # Minify all JavaScript files in-place
-RUN find /usr/share/nginx/html -name "*.js" -type f -exec /tmp/minify.sh {} \; && \
+RUN find /usr/share/nginx/html -name "*.js" -type f -exec sh /tmp/minify.sh {} \; && \
     rm -r /tmp && \
     rm -r /usr/share/nginx/html/.git && \
     rm -r /usr/share/nginx/html/utils
