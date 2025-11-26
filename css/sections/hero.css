@@ -197,3 +197,9 @@
         padding: 12px;
     }
 }
+
+.quote {
+    font-size: 0.9rem;
+    color: var(--text-color-dark);
+    font-style: italic;
+}

@@ -1,5 +1,3 @@
-
-// Initialize the matrix background when the DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     new MatrixBackground();
 

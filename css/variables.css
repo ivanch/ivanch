@@ -9,8 +9,8 @@
     --button-hover-gradient: linear-gradient(120deg, rgba(30, 10, 50, 0.75), rgba(10, 10, 40, 0.4));
 
     --background-color: #000000;
-    --glass-background: rgba(20, 20, 20, 0.1);
-    --glass-border: rgba(255, 255, 255, 0.18);
+    --glass-background: rgba(4, 0, 10, 0.5);
+    --glass-border: rgba(255, 255, 255, 0.13);
     --glass-shadow: rgba(31, 38, 135, 0.30);
 
     --text-color: #ffffff;

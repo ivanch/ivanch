@@ -52,13 +52,11 @@ img {
 
 .glass {
     background: var(--glass-background);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
     border-radius: var(--border-radius);
     border-top: 1px solid var(--glass-border);
     border-bottom: 1px solid var(--glass-border);
-    /* base shadows: outer shadow from variables + subtle inset
-         an extra animated outer shadow is layered to give a natural "alive" feel */
     box-shadow: 0 8px 36px 0 var(--glass-shadow), var(--inset-shadow);
     will-change: box-shadow;
     animation: glass-shadow 8s ease-in-out infinite !important;
