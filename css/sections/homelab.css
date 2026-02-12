@@ -163,32 +163,6 @@
         0 0 4px rgba(0, 255, 255, 0.1);
 }
 
-.homelab-subtitle {
-    display: block;
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 0.95rem;
-    font-weight: 600;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    margin-top: 0.5rem;
-    background: linear-gradient(20deg,
-            var(--primary-color),
-            var(--secondary-color),
-            var(--tertiary-color),
-            var(--primary-color-light),
-            var(--primary-color),
-            var(--secondary-color),
-            var(--tertiary-color));
-    background-size: 800% 800%;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    color: rgba(255, 255, 255, 0.8);
-    text-shadow:
-        0 0 2px rgba(0, 255, 255, 0.1),
-        0 0 1px rgba(255, 255, 255, 0.3);
-}
-
 .homelab-buttons {
     display: flex;
     gap: 16px;
