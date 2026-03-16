@@ -10,9 +10,8 @@
     border-radius: var(--border-radius-large);
     box-shadow: 0 8px 36px 0 var(--glass-shadow), var(--inset-shadow);
     border-bottom: 1px solid var(--glass-border);
-    min-width: 280px;
-    max-width: 340px;
-    margin-left: 20px;
+    min-width: 380px;
+    max-width: 440px;
     align-self: stretch;
 }
 

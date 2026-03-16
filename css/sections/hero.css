@@ -1,11 +1,7 @@
-
 .social-links {
-    position: relative;
 }
 
 .social-link {
-    display: inline-flex;
-    align-items: center;
 }
 
 .email-tooltip {
@@ -45,22 +41,24 @@
     white-space: nowrap;
 }
 
-
 .hero-details {
     display: flex;
     flex-direction: row;
-    gap: 32px;
+    gap: 8px;
     align-items: flex-start;
     width: 100%;
+    justify-content: flex-start;
 }
 .hero-main-column {
     display: flex;
     flex-direction: column;
     gap: 24px;
+    flex: 1 1 auto;
+    min-width: 0;
 }
 
 .hero-card {
-    padding: 48px;
+    padding: 42px;
     width: 100%;
     display: grid;
     grid-template-columns: 200px 1fr;
@@ -70,13 +68,14 @@
 }
 
 .name {
-    font-size: 2.5rem;
+    font-size: 2.8rem;
     font-weight: 700;
-    margin-bottom: 8px;
-    background: linear-gradient(135deg, var(--text-color) 0%, var(--text-color-light) 100%);
+    margin-bottom: 12px;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    letter-spacing: -0.5px;
 }
 
 .description {
@@ -84,6 +83,8 @@
     margin-bottom: 32px;
     color: var(--text-color-light);
     font-weight: 400;
+    line-height: 1.6;
+    letter-spacing: 0.2px;
 }
 
 .social-links {
@@ -92,6 +93,20 @@
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
+    margin-top: 8px;
+    position: relative;
+}
+
+.social-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.social-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--dark-shadow-20);
 }
 .social-link {
     display: inline-flex;
@@ -147,6 +162,7 @@
 
     .description {
         margin-bottom: 24px;
+        font-size: 1rem;
     }
 
     .social-links {
