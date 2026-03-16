@@ -77,6 +77,16 @@
     border-radius: var(--border-radius-large);
 }
 
+.avatar:hover img {
+    animation: avatar-glitch 1s infinite linear;
+}
+
+@keyframes avatar-glitch {
+    0%, 100% { 
+        transform: translate(0);
+    }
+}
+
 @media (max-width: 1024px) {
     .profile-info {
         align-items: center;
