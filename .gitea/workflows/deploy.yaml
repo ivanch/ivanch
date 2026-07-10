@@ -1,9 +1,6 @@
-name: Homepage Build and Deploy (Test)
+name: Homepage Deploy (Production)
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch: {}
 
 env:
@@ -30,7 +27,7 @@ jobs:
         uses: https://git.ivanch.me/ivanch/pipeline-actions/build-and-push@main
         with:
           image: ${{ env.IMAGE_NAME }}
-          image_tag: ${{ steps.vars.outputs.short_sha }}
+          image_tag: latest
           registry_password: ${{ secrets.REGISTRY_PASSWORD }}
           ssh_key: ${{ secrets.SSH_KEY_DOCKERBUILD }}
 
@@ -49,6 +46,6 @@ jobs:
           ssh_username: ${{ secrets.USERNAME }}
           ssh_key: ${{ secrets.KEY }}
           ssh_port: ${{ secrets.PORT }}
-          remote_dir: ${{ secrets.TEST_DIR }}
+          remote_dir: ${{ secrets.DIR }}
           image: ${{ env.IMAGE_NAME }}
-          image_tag: ${{ needs.build.outputs.short_sha }}
+          image_tag: latest
