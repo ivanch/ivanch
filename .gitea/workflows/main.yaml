@@ -20,7 +20,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build and Push Multi-Arch Image
-        uses: ivanch/pipeline-actions/build-and-push@main
+        uses: https://git.ivanch.me/ivanch/pipeline-actions/build-and-push@main
         with:
           image: ${{ env.IMAGE_NAME }}
           registry_password: ${{ secrets.REGISTRY_PASSWORD }}
@@ -35,7 +35,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Recreate Container
-        uses: ivanch/pipeline-actions/ssh-deploy@main
+        uses: https://git.ivanch.me/ivanch/pipeline-actions/ssh-deploy@main
         with:
           ssh_host: ${{ secrets.HOST }}
           ssh_username: ${{ secrets.USERNAME }}
