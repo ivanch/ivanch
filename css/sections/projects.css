@@ -2,13 +2,13 @@
     flex: 0 0 340px;
     display: flex;
     flex-direction: column;
-    gap: 18px;
-    padding: 32px 24px;
+    gap: var(--space-md);
+    padding: var(--space-xl) var(--space-lg);
     background: rgba(20, 20, 30, 0.10);
     backdrop-filter: blur(24px) saturate(140%) brightness(1.08);
     -webkit-backdrop-filter: blur(24px) saturate(140%) brightness(1.08);
     border-radius: var(--border-radius-large);
-    box-shadow: 0 8px 36px 0 var(--glass-shadow), var(--inset-shadow);
+    box-shadow: var(--shadow-md), var(--inset-shadow);
     border-bottom: 1px solid var(--glass-border);
     min-width: 380px;
     max-width: 440px;
@@ -16,49 +16,84 @@
 }
 
 .projects-title {
-    font-size: 1.6rem;
+    font-size: var(--text-md);
     font-weight: 700;
-    margin-bottom: 10px;
+    margin-bottom: var(--space-sm);
     color: var(--text-color);
     letter-spacing: 0.03em;
-    background: linear-gradient(135deg, var(--secondary-color) 0%, var(--text-color) 100%);
+    background: linear-gradient(135deg, var(--secondary-500) 0%, var(--text-color) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
 
+/* ------------------------------------------------------------------ */
+/* Project cards — unified surface + accent left bar                  */
+/* nth-of-type replaces nth-child so .projects-title doesn't shift    */
+/* the odd/even alternation (bug fix).                                */
+/* ------------------------------------------------------------------ */
 .project {
-    padding: 18px 16px;
+    position: relative;
+    padding: var(--space-md) var(--space-md) var(--space-md) var(--space-lg);
     border-radius: var(--border-radius);
-    box-shadow: 0 2px 12px 0 rgba(31, 38, 135, 0.10);
-    margin-bottom: 0;
+    background: var(--surface-raised);
+    border: 1px solid var(--surface-divider);
+    box-shadow: var(--shadow-sm);
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    transition: transform 0.28s cubic-bezier(0.4, 0.2, 0.2, 1), box-shadow 0.28s cubic-bezier(0.4, 0.2, 0.2, 1);
+    gap: var(--space-2xs);
+    transition: transform var(--dur-med) var(--ease-out-soft),
+                box-shadow var(--dur-med) var(--ease-out-soft),
+                border-color var(--dur-med) var(--ease-out-soft),
+                filter var(--dur-med) var(--ease-out-soft);
+    overflow: hidden;
 }
 
-.project:hover {
-    transform: scale(1.012);
-    box-shadow: 0 4px 24px 0 rgba(31, 38, 135, 0.13), 0 1.5px 4px 0 rgba(255, 255, 255, 0.08) inset;
-    filter: brightness(1.04) saturate(1.08);
+/* Thin accent bar — rotating accent color per card */
+.project::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 60%;
+    border-radius: var(--radius-pill);
+    background: var(--primary-500);
+    opacity: 0.6;
+    transition: height var(--dur-med) var(--ease-out-soft),
+                opacity var(--dur-med) var(--ease-out-soft);
 }
 
-.project:nth-child(odd) {
-    background: linear-gradient(135deg, rgba(20, 30, 60, 0.75) 0%, rgba(40, 50, 120, 0.75) 100%);
+.project:nth-of-type(odd)::before {
+    background: linear-gradient(var(--primary-500), var(--secondary-500));
 }
 
-.project:nth-child(even) {
-    background: linear-gradient(135deg, rgba(10, 10, 10, 0.82) 0%, rgba(30, 30, 30, 0.82) 100%);
+.project:nth-of-type(even)::before {
+    background: linear-gradient(var(--tertiary-500), var(--primary-500));
+}
+
+.project:hover,
+.project:focus-within {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md), var(--accent-glow-ring);
+    border-color: rgba(79, 195, 247, 0.3);
+    filter: brightness(1.05) saturate(1.08);
+}
+
+.project:hover::before,
+.project:focus-within::before {
+    height: 85%;
+    opacity: 1;
 }
 
 .project-title {
-    font-size: 1.15rem;
+    font-size: var(--text-md);
     font-weight: 600;
     color: var(--text-color);
-    margin-bottom: 2px;
+    margin-bottom: var(--space-2xs);
     letter-spacing: 0.01em;
-    background: linear-gradient(90deg, var(--text-color) 0%, var(--secondary-color) 100%);
+    background: linear-gradient(90deg, var(--text-color) 0%, var(--secondary-400) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -66,18 +101,18 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 8px;
+    gap: var(--space-sm);
 }
 
 .project-icons {
     display: flex;
-    gap: 8px;
+    gap: var(--space-xs);
     align-items: center;
     flex: 0 0 auto;
     flex-wrap: nowrap;
 }
 
-/* Ensure long titles don't push icons to a new line */
+/* Keep long titles from pushing icons to a new line */
 .project-title > span:first-child {
     flex: 1 1 auto;
     min-width: 0;
@@ -90,82 +125,89 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    color: var(--text-color);
-    transition: all 0.2s;
+    width: 28px;
+    height: 28px;
+    border-radius: var(--radius-sm);
+    color: var(--text-color-light);
+    transition: background var(--dur-fast) var(--ease-out-soft),
+                color var(--dur-fast) var(--ease-out-soft);
 }
 
-.project-icon-link:hover {
-    color: var(--primary-color);
+.project-icon-link:hover,
+.project-icon-link:focus-visible {
+    color: var(--primary-500);
+    background: rgba(79, 195, 247, 0.12);
 }
 
 .project-desc {
-    font-size: 0.98rem;
+    font-size: var(--text-sm);
     color: var(--text-color-light);
     font-weight: 400;
     line-height: 1.5;
 }
 
-
+/* ------------------------------------------------------------------ */
+/* Responsive                                                          */
+/* ------------------------------------------------------------------ */
 @media (max-width: 1024px) {
     .projects-section {
         flex: unset;
         max-width: 100%;
         margin-left: 0;
-        margin-top: 24px;
+        margin-top: var(--space-xl);
         min-width: unset;
     }
 }
 
 @media (max-width: 768px) {
     .projects-section {
-        padding: 28px 20px;
-        gap: 16px;
+        padding: var(--space-xl) var(--space-md);
+        gap: var(--space-md);
     }
-    
+
     .projects-title {
-        font-size: 1.5rem;
+        font-size: var(--text-md);
         text-align: center;
-        margin-bottom: 12px;
+        margin-bottom: var(--space-sm);
     }
 }
 
 @media (max-width: 480px) {
     .projects-section {
-        padding: 24px 16px;
-        gap: 14px;
+        padding: var(--space-lg) var(--space-md);
+        gap: var(--space-sm);
     }
-    
+
     .projects-title {
-        font-size: 1.4rem;
+        font-size: var(--text-sm);
     }
-    
+
     .project {
-        padding: 16px 14px;
+        padding: var(--space-md) var(--space-sm) var(--space-md) var(--space-md);
     }
-    
+
     .project-title {
-        font-size: 1.1rem;
+        font-size: var(--text-sm);
     }
-    
+
     .project-desc {
-        font-size: 0.95rem;
+        font-size: var(--text-xs);
     }
-    
+
     .project-icons {
-        gap: 6px;
+        gap: var(--space-2xs);
     }
 }
 
 @media (max-width: 380px) {
     .project {
-        padding: 14px 12px;
+        padding: var(--space-sm) var(--space-xs) var(--space-sm) var(--space-sm);
     }
-    
+
     .project-title {
-        font-size: 1.05rem;
-        /* Keep a single row layout even on very small screens */
+        font-size: var(--text-xs);
         flex-direction: row;
         align-items: center;
-        gap: 8px;
+        gap: var(--space-xs);
     }
 }

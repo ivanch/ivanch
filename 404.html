@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="description" content="The requested page could not be found.">
+    <meta name="author" content="ivanch">
+
+    <meta name="format-detection" content="telephone=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <link rel="icon" href="/assets/favicon.ico" type="image/x-icon">
+
+    <title>404 | ivanch</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/matrix.css">
+    <link rel="stylesheet" href="css/button.css">
+    <link rel="stylesheet" href="css/sections/error.css">
+
+    <!-- Remix Icon CDN for the navigation icon -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+
+<body>
+    <canvas class="matrix-canvas" id="matrixCanvas" aria-hidden="true"></canvas>
+
+    <main class="main-container">
+        <section class="glass error-card" aria-labelledby="error-title">
+            <div class="error-code" aria-hidden="true">404</div>
+            <p class="error-kicker">Signal lost</p>
+            <h1 id="error-title">This page doesn't exist.</h1>
+            <p class="error-message">
+                The route you followed drifted out of reach.
+            </p>
+            <p class="error-message">
+                Let's get you back to somewhere useful, shall we?
+            </p>
+            <a class="btn error-home-link" href="/">
+                <i class="ri-home-5-line" aria-hidden="true"></i>
+                Back to home
+            </a>
+        </section>
+    </main>
+
+    <script src="js/matrix.js"></script>
+</body>
+
+</html>

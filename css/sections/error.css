@@ -1,0 +1,63 @@
+.error-card {
+    width: min(100%, 680px);
+    padding: var(--space-3xl) var(--space-2xl);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--space-md);
+    animation: fadeInUp 0.8s var(--ease-out-expo);
+}
+
+.error-code {
+    font-family: var(--font-mono);
+    font-size: clamp(5rem, 16vw, 9rem);
+    font-weight: 700;
+    line-height: 0.85;
+    letter-spacing: -0.08em;
+    background: var(--accent-gradient-text);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 18px rgba(79, 195, 247, 0.12));
+}
+
+.error-kicker {
+    margin-top: var(--space-sm);
+    color: var(--primary-400);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+}
+
+.error-card h1 {
+    font-size: var(--text-xl);
+    margin-top: var(--space-2xs);
+}
+
+.error-message {
+    max-width: 34rem;
+    color: var(--text-color-mid);
+    font-size: var(--text-base);
+    line-height: 1.6;
+}
+
+.error-home-link {
+    margin-top: var(--space-sm);
+}
+
+@media (max-width: 480px) {
+    .error-card {
+        padding: var(--space-2xl) var(--space-lg);
+    }
+
+    .error-card h1 {
+        font-size: var(--text-lg);
+    }
+
+    .error-message {
+        font-size: var(--text-sm);
+    }
+}
