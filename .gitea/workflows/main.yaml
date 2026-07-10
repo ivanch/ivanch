@@ -24,7 +24,9 @@ jobs:
       - name: Export short commit SHA
         id: vars
         shell: bash
-        run: echo "short_sha=${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
+        run: |
+          echo "short_sha=${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
+          echo "sha: ${{ steps.vars.outputs.short_sha }}"
 
       - name: Build and Push Multi-Arch Image
         uses: https://git.ivanch.me/ivanch/pipeline-actions/build-and-push@main
