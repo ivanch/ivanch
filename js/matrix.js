@@ -168,16 +168,39 @@ class MatrixBackground {
             dot.vx += (dot.baseVx + wanderX - dot.vx) * 0.02;
             dot.vy += (dot.baseVy + wanderY - dot.vy) * 0.02;
 
-            const maxX = this.canvas.width - dot.size;
-            const maxY = this.canvas.height - dot.size;
-            if (dot.x <= 0 || dot.x >= maxX) {
-                dot.vx = -dot.vx;
-                dot.x = Math.max(0, Math.min(maxX, dot.x));
+            // Reflect at the canvas edge. Keep the base velocity in sync with
+            // the bounce so the drift easing does not push the dot back into
+            // the same wall on the next frames.
+            const radius = dot.size / 2;
+            const minX = radius;
+            const minY = radius;
+            const maxX = Math.max(minX, this.canvas.width - radius);
+            const maxY = Math.max(minY, this.canvas.height - radius);
+
+            if (dot.x <= minX && dot.vx < 0) {
+                dot.x = minX + (minX - dot.x);
+                dot.vx = Math.abs(dot.vx);
+                dot.baseVx = Math.abs(dot.baseVx);
+            } else if (dot.x >= maxX && dot.vx > 0) {
+                dot.x = maxX - (dot.x - maxX);
+                dot.vx = -Math.abs(dot.vx);
+                dot.baseVx = -Math.abs(dot.baseVx);
             }
-            if (dot.y <= 0 || dot.y >= maxY) {
-                dot.vy = -dot.vy;
-                dot.y = Math.max(0, Math.min(maxY, dot.y));
+
+            if (dot.y <= minY && dot.vy < 0) {
+                dot.y = minY + (minY - dot.y);
+                dot.vy = Math.abs(dot.vy);
+                dot.baseVy = Math.abs(dot.baseVy);
+            } else if (dot.y >= maxY && dot.vy > 0) {
+                dot.y = maxY - (dot.y - maxY);
+                dot.vy = -Math.abs(dot.vy);
+                dot.baseVy = -Math.abs(dot.baseVy);
             }
+
+            // A large pointer impulse can overshoot both edges by more than
+            // one frame, so clamp after reflecting the position.
+            dot.x = Math.max(minX, Math.min(maxX, dot.x));
+            dot.y = Math.max(minY, Math.min(maxY, dot.y));
         });
     }
 
