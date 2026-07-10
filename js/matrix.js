@@ -171,11 +171,11 @@ class MatrixBackground {
             // Reflect at the canvas edge. Keep the base velocity in sync with
             // the bounce so the drift easing does not push the dot back into
             // the same wall on the next frames.
-            const radius = dot.size / 2;
-            const minX = radius;
-            const minY = radius;
-            const maxX = Math.max(minX, this.canvas.width - radius);
-            const maxY = Math.max(minY, this.canvas.height - radius);
+            const dotRadius = dot.size / 2;
+            const minX = dotRadius;
+            const minY = dotRadius;
+            const maxX = Math.max(minX, this.canvas.width - dotRadius);
+            const maxY = Math.max(minY, this.canvas.height - dotRadius);
 
             if (dot.x <= minX && dot.vx < 0) {
                 dot.x = minX + (minX - dot.x);
