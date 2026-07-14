@@ -11,7 +11,7 @@ env:
 jobs:
   build:
     name: Build Homepage Image
-    runs-on: ubuntu-amd64
+    runs-on: runner-slim-amd64
     outputs:
       short_sha: ${{ steps.vars.outputs.short_sha }}
     steps:
@@ -33,7 +33,7 @@ jobs:
 
   deploy:
     name: Deploy Homepage
-    runs-on: ubuntu-amd64
+    runs-on: runner-slim-amd64
     needs: build
     steps:
       - name: Check out repository
