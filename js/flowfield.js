@@ -113,7 +113,7 @@ class FlowFieldBackground {
         this.noise = new SimplexNoise((Math.random() * 0xffffffff) | 0);
 
         this.particles = [];
-        this.pulses = [];
+        this.sparks = [];
         this.mouse = { x: 0, y: 0, active: false };
         this.rafId = null;
         this.prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -127,32 +127,27 @@ class FlowFieldBackground {
 
         this.config = {
             baseSpeed: 0.75,
-            maxSpeed: 2.4,       // velocity cap so ripples can't fling streaks
+            maxSpeed: 2.8,       // velocity cap so streaks remain calm
             steer: 0.055,        // how fast particles align with the field
-            fieldScale: 0.0016,  // noise zoom: small value = large, calm features
-            warpStrength: 150,   // px of domain warp, keeps the flow organic
+            fieldScale: 0.0015,  // noise zoom: small value = large, calm features
+            warpStrength: 160,   // px of domain warp, keeps the flow organic
             winding: 2.4,        // field angle range multiplier (x PI)
             timeDrift: 0.00028,  // slow evolution of the whole field
-            fadeAlpha: 0.035,    // trail persistence (lower = longer trails)
-            mouseRadius: 160,
+            fadeAlpha: 0.038,    // trail persistence (lower = longer trails)
+            mouseRadius: 180,
             mouseSwirl: 0.5,     // tangential push around the cursor
             mousePull: 0.06,     // whisper of inward pull -> orbiting feel
-            glowBoost: 0.2,      // extra alpha for particles near the cursor
-            maxPulses: 4,
-            pulseSpeed: 3.4,
-            pulseRadius: 280,
-            pulseBand: 46,       // px band around the ring that pushes particles
-            pulseStrength: 0.55,
-            life: { min: 260, max: 900 } // frames before a particle respawns
+            glowBoost: 0.25,     // extra alpha for particles near the cursor
+            sparkCount: 10,      // subtle micro-sparks per click
+            life: { min: 280, max: 920 } // frames before a particle respawns
         };
 
-        // Mostly near-white hairlines, with a few accent-tinted currents
-        // sampled from the site palette (cyan / indigo / violet).
+        // Rich site palette with cyan, indigo, violet, and soft luminous accents
         this.palette = [
-            { weight: 0.62, rgb: '206, 224, 255', alpha: 0.125 },
-            { weight: 0.14, rgb: '79, 195, 247', alpha: 0.22 },
-            { weight: 0.12, rgb: '102, 126, 234', alpha: 0.115 },
-            { weight: 0.12, rgb: '146, 103, 197', alpha: 0.115 }
+            { weight: 0.55, rgb: '206, 224, 255', alpha: 0.13 }, // Soft cyan-white
+            { weight: 0.18, rgb: '79, 195, 247', alpha: 0.24 }, // Electric cyan
+            { weight: 0.14, rgb: '102, 126, 234', alpha: 0.16 }, // Deep indigo
+            { weight: 0.13, rgb: '146, 103, 197', alpha: 0.16 }  // Soft violet
         ];
 
         this.init();
@@ -182,7 +177,7 @@ class FlowFieldBackground {
         }, { passive: true });
 
         window.addEventListener('pointerdown', (e) => {
-            this.spawnPulse(e.clientX, e.clientY);
+            this.spawnClickBurst(e.clientX, e.clientY);
         }, { passive: true });
 
         window.addEventListener('pointerout', () => {
@@ -255,19 +250,41 @@ class FlowFieldBackground {
     createParticle() {
         const tone = this.pickTone();
         const { min, max } = this.config.life;
+
+        // 3 Depth layers: 0 (background ambient), 1 (main stream), 2 (foreground highlight)
+        const randDepth = Math.random();
+        let depth = 1;
+        let speedMult = 1.0;
+        let widthMult = 1.0;
+        let alphaMult = 1.0;
+
+        if (randDepth < 0.25) {
+            depth = 0;
+            speedMult = 0.65;
+            widthMult = 0.6;
+            alphaMult = 0.65;
+        } else if (randDepth > 0.78) {
+            depth = 2;
+            speedMult = 1.35;
+            widthMult = 1.35;
+            alphaMult = 1.25;
+        }
+
         return {
+            depth,
             x: Math.random() * this.width,
             y: Math.random() * this.height,
             px: 0,
             py: 0,
             vx: 0,
             vy: 0,
-            speed: this.config.baseSpeed * (0.7 + Math.random() * 0.6),
-            width: 0.7 + Math.random() * 0.6,
+            speed: this.config.baseSpeed * speedMult * (0.75 + Math.random() * 0.5),
+            width: (0.7 + Math.random() * 0.5) * widthMult,
             rgb: tone.rgb,
-            alpha: tone.alpha * (0.7 + Math.random() * 0.6),
+            baseAlpha: tone.alpha * (0.75 + Math.random() * 0.5) * alphaMult,
+            alpha: 0,
             glow: 0,
-            life: 0,
+            life: Math.floor(Math.random() * (min * 0.5)),
             maxLife: min + Math.random() * (max - min),
             fresh: true // no previous point yet -> nothing to draw
         };
@@ -282,9 +299,27 @@ class FlowFieldBackground {
         p.fresh = true;
     }
 
-    spawnPulse(x, y) {
-        if (this.pulses.length >= this.config.maxPulses) this.pulses.shift();
-        this.pulses.push({ x, y, r: 0 });
+    spawnClickBurst(x, y) {
+        // Emit a subtle, delicate burst of hair-thin micro-sparks on click
+        const count = this.config.sparkCount;
+        for (let i = 0; i < count; i++) {
+            const angle = Math.random() * Math.PI * 2;
+            const speed = 1.0 + Math.random() * 2.2;
+            const tone = this.pickTone();
+            this.sparks.push({
+                x,
+                y,
+                px: x,
+                py: y,
+                vx: Math.cos(angle) * speed,
+                vy: Math.sin(angle) * speed,
+                rgb: tone.rgb,
+                size: 0.6 + Math.random() * 0.8,
+                alpha: 0.6 + Math.random() * 0.25,
+                life: 0,
+                maxLife: 25 + Math.random() * 25
+            });
+        }
     }
 
     updateParticles() {
@@ -294,7 +329,19 @@ class FlowFieldBackground {
         const radius = this.config.mouseRadius;
         const radiusSq = radius * radius;
 
+        const fadeIn = 35;
+        const fadeOut = 55;
+
         for (const p of this.particles) {
+            // Smooth life envelope (fade-in on spawn, fade-out near maxLife)
+            let lifeEnvelope = 1;
+            if (p.life < fadeIn) {
+                lifeEnvelope = p.life / fadeIn;
+            } else if (p.life > p.maxLife - fadeOut) {
+                lifeEnvelope = Math.max(0, (p.maxLife - p.life) / fadeOut);
+            }
+            p.alpha = p.baseAlpha * lifeEnvelope;
+
             // Domain-warped flow angle: the warp layer bends the main field
             // so the current curls organically instead of drifting straight.
             const warp = this.noise.noise2D(
@@ -328,19 +375,6 @@ class FlowFieldBackground {
             // Smooth the glow so the highlight eases in and out.
             p.glow += (proximity - p.glow) * 0.12;
 
-            // Click / tap ripples shove particles radially outward.
-            for (const pulse of this.pulses) {
-                const dx = p.x - pulse.x;
-                const dy = p.y - pulse.y;
-                const dist = Math.sqrt(dx * dx + dy * dy) || 1;
-                const offset = Math.abs(dist - pulse.r);
-                if (offset < this.config.pulseBand) {
-                    const push = (1 - offset / this.config.pulseBand) * this.config.pulseStrength;
-                    p.vx += (dx / dist) * push;
-                    p.vy += (dy / dist) * push;
-                }
-            }
-
             const speedSq = p.vx * p.vx + p.vy * p.vy;
             if (speedSq > maxSpeed * maxSpeed) {
                 const scale = maxSpeed / Math.sqrt(speedSq);
@@ -366,11 +400,27 @@ class FlowFieldBackground {
         }
     }
 
-    updatePulses() {
-        for (let i = this.pulses.length - 1; i >= 0; i--) {
-            const pulse = this.pulses[i];
-            pulse.r += this.config.pulseSpeed;
-            if (pulse.r > this.config.pulseRadius) this.pulses.splice(i, 1);
+    updateSparks() {
+        const drag = 0.91;
+        const { fieldScale } = this.config;
+        const t = this.time;
+        for (let i = this.sparks.length - 1; i >= 0; i--) {
+            const s = this.sparks[i];
+            s.px = s.x;
+            s.py = s.y;
+
+            // Gently blend spark velocity with noise field as it slows down
+            const angle = this.noise.noise2D(s.x * fieldScale + t, s.y * fieldScale - t) * Math.PI * 2;
+            s.vx = s.vx * drag + Math.cos(angle) * 0.15;
+            s.vy = s.vy * drag + Math.sin(angle) * 0.15;
+
+            s.x += s.vx;
+            s.y += s.vy;
+            s.life++;
+
+            if (s.life >= s.maxLife) {
+                this.sparks.splice(i, 1);
+            }
         }
     }
 
@@ -394,35 +444,50 @@ class FlowFieldBackground {
                 continue;
             }
             const alpha = Math.min(1, p.alpha + p.glow * this.config.glowBoost);
+            if (alpha <= 0.005) continue;
+
             ctx.strokeStyle = `rgba(${p.rgb}, ${alpha.toFixed(3)})`;
             ctx.lineWidth = p.width;
             ctx.beginPath();
             ctx.moveTo(p.px, p.py);
             ctx.lineTo(p.x, p.y);
             ctx.stroke();
+
+            // Draw a subtle bright dot at the head of foreground particles
+            if (p.depth === 2 && (p.glow > 0.1 || Math.random() < 0.12)) {
+                ctx.fillStyle = `rgba(240, 248, 255, ${(alpha * 0.75).toFixed(3)})`;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.width * 0.75, 0, Math.PI * 2);
+                ctx.fill();
+            }
         }
     }
 
-    drawPulses() {
-        if (!this.pulses.length) return;
+    drawSparks() {
+        if (!this.sparks.length) return;
         const ctx = this.ctx;
-        ctx.globalCompositeOperation = 'source-over';
-        ctx.lineWidth = 1;
-        for (const pulse of this.pulses) {
-            const fadeOut = 1 - pulse.r / this.config.pulseRadius;
-            ctx.strokeStyle = `rgba(79, 195, 247, ${(fadeOut * 0.45).toFixed(3)})`;
+        ctx.globalCompositeOperation = 'lighter';
+
+        for (const s of this.sparks) {
+            const lifeRatio = 1 - s.life / s.maxLife;
+            const alpha = (s.alpha * lifeRatio * lifeRatio).toFixed(3);
+            if (alpha <= 0) continue;
+
+            ctx.strokeStyle = `rgba(${s.rgb}, ${alpha})`;
+            ctx.lineWidth = s.size * lifeRatio;
             ctx.beginPath();
-            ctx.arc(pulse.x, pulse.y, pulse.r, 0, Math.PI * 2);
+            ctx.moveTo(s.px, s.py);
+            ctx.lineTo(s.x, s.y);
             ctx.stroke();
         }
     }
 
     step(withFade) {
         if (withFade) this.fade();
-        this.updatePulses();
+        this.updateSparks();
         this.updateParticles();
         this.drawParticles();
-        this.drawPulses();
+        this.drawSparks();
         this.time += this.config.timeDrift;
     }
 
