@@ -1,5 +1,4 @@
 .homelab-section {
-    margin-top: var(--space-md);
     padding: var(--space-xl) var(--space-lg);
     background: rgba(20, 20, 30, 0.10);
     backdrop-filter: blur(48px);
@@ -7,8 +6,8 @@
     border-radius: var(--border-radius-large);
     box-shadow: var(--shadow-md), var(--inset-shadow);
     border: 1px solid var(--glass-border);
-    min-width: 26rem;
-    max-width: 26rem;
+    min-width: 0;
+    width: 100%;
     align-self: stretch;
     display: flex;
     flex-direction: column;
@@ -220,12 +219,11 @@
     .homelab-buttons {
         gap: var(--space-sm);
         flex-direction: column;
-        align-items: center;
+        align-items: stretch;
     }
 
     .homelab-btn {
         width: 100%;
-        max-width: 200px;
         justify-content: center;
     }
 }

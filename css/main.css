@@ -16,7 +16,6 @@ body {
     font-family: var(--font-family);
     background: var(--background-color);
     min-height: 100vh;
-    overflow-x: hidden;
     position: relative;
     color: var(--text-color);
     -webkit-font-smoothing: antialiased;
@@ -65,13 +64,15 @@ img {
 }
 
 .main-container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    --page-gutter: var(--space-lg);
+    --page-top: var(--space-xl);
+    position: relative;
+    margin: 0 auto;
     max-width: 1200px;
     width: 100%;
-    padding: 0 var(--space-lg);
+    min-height: 100vh;
+    min-height: 100svh;
+    padding: var(--page-top) var(--page-gutter) var(--space-xl);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -114,8 +115,8 @@ img {
     padding: var(--space-2xl) var(--space-xl);
     transition: background var(--dur-med) var(--ease-out-soft),
                 box-shadow var(--dur-med) var(--ease-out-soft);
-    min-width: 26rem;
-    max-width: 26rem;
+    min-width: 0;
+    width: 100%;
 }
 
 /* ------------------------------------------------------------------ */
@@ -158,28 +159,12 @@ img {
 
 /* ------------------------------------------------------------------ */
 /* Mobile responsive layout                                            */
-/* Single breakpoint switches the centered card to a stacked column.  */
-/* Width constraints (set via tokens in section CSS) are overridden   */
-/* in one place here rather than repeated across multiple sections.   */
+/* Keep the page in normal flow so short screens can scroll fully.    */
 /* ------------------------------------------------------------------ */
 @media (max-width: 1024px) {
     .main-container {
-        position: relative;
-        top: auto;
-        left: auto;
-        transform: none;
-        padding: var(--space-xl) var(--space-md);
-        min-height: 100vh;
-        display: flex;
+        --page-gutter: var(--space-md);
         align-items: flex-start;
-    }
-
-    .content,
-    .homelab-section,
-    .projects-section {
-        min-width: unset;
-        max-width: unset;
-        width: 100%;
     }
 
     .content {
@@ -188,15 +173,22 @@ img {
 }
 
 @media (max-width: 480px) {
-    body {
-        font-size: 14px;
-    }
-
     .main-container {
-        padding: var(--space-xl) var(--space-sm);
+        --page-gutter: var(--space-xs);
+        --page-top: var(--space-md);
     }
 
     .content {
         padding: var(--space-lg) var(--space-md);
+    }
+}
+
+/* Leave room for notches and the home indicator in landscape, too. */
+@supports (padding: max(0px, env(safe-area-inset-left))) {
+    .main-container {
+        padding-top: max(var(--page-top), env(safe-area-inset-top));
+        padding-left: max(var(--page-gutter), env(safe-area-inset-left));
+        padding-right: max(var(--page-gutter), env(safe-area-inset-right));
+        padding-bottom: max(var(--space-xl), env(safe-area-inset-bottom));
     }
 }

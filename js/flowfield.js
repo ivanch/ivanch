@@ -116,7 +116,8 @@ class FlowFieldBackground {
         this.sparks = [];
         this.mouse = { x: 0, y: 0, active: false };
         this.rafId = null;
-        this.prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        this.resizeRaf = null;
+        this.events = new AbortController();
 
         this.width = 0;
         this.height = 0;
@@ -157,47 +158,44 @@ class FlowFieldBackground {
         this.bindEvents();
         this.handleResize();
 
-        if (this.prefersReducedMotion) {
-            // Single long-exposure render; no animation loop at all.
-            this.warmup(180);
-            return;
-        }
-
         // Pre-run a short exposure so the first paint is already textured.
         this.warmup(60);
         this.animate();
     }
 
     bindEvents() {
+        const signal = this.events.signal;
         // The canvas has pointer-events: none, so listen on window.
         window.addEventListener('pointermove', (e) => {
             this.mouse.x = e.clientX;
             this.mouse.y = e.clientY;
             this.mouse.active = true;
-        }, { passive: true });
+        }, { passive: true, signal });
 
         window.addEventListener('pointerdown', (e) => {
             this.spawnClickBurst(e.clientX, e.clientY);
-        }, { passive: true });
+        }, { passive: true, signal });
 
         window.addEventListener('pointerout', () => {
             this.mouse.active = false;
-        });
+        }, { signal });
 
         // Pause the rAF loop when the tab is hidden to save CPU / battery.
         document.addEventListener('visibilitychange', () => {
             if (document.hidden) {
                 this.stop();
-            } else if (!this.prefersReducedMotion) {
+            } else {
                 this.start();
             }
-        });
+        }, { signal });
 
-        let resizeRaf = null;
         window.addEventListener('resize', () => {
-            if (resizeRaf) cancelAnimationFrame(resizeRaf);
-            resizeRaf = requestAnimationFrame(() => this.handleResize());
-        });
+            if (this.resizeRaf) cancelAnimationFrame(this.resizeRaf);
+            this.resizeRaf = requestAnimationFrame(() => {
+                this.resizeRaf = null;
+                this.handleResize();
+            });
+        }, { signal });
     }
 
     start() {
@@ -210,6 +208,17 @@ class FlowFieldBackground {
             cancelAnimationFrame(this.rafId);
             this.rafId = null;
         }
+    }
+
+    destroy() {
+        this.stop();
+        this.events.abort();
+        if (this.resizeRaf) cancelAnimationFrame(this.resizeRaf);
+        this.particles = [];
+        this.sparks = [];
+        // Release the high-DPI drawing buffer when switching to CSS only.
+        this.canvas.width = 1;
+        this.canvas.height = 1;
     }
 
     handleResize() {
@@ -504,5 +513,22 @@ class FlowFieldBackground {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    new FlowFieldBackground();
+    // Keep this query in sync with the static backdrop in css/matrix.css.
+    const staticBackground = window.matchMedia(
+        '(max-width: 1024px), (pointer: coarse), (prefers-reduced-motion: reduce)'
+    );
+    let background = null;
+
+    function updateBackground() {
+        if (staticBackground.matches) {
+            if (background) background.destroy();
+            background = null;
+        } else if (!background) {
+            background = new FlowFieldBackground();
+            if (document.hidden) background.stop();
+        }
+    }
+
+    staticBackground.addEventListener('change', updateBackground);
+    updateBackground();
 });

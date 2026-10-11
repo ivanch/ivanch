@@ -262,6 +262,26 @@
 /* ------------------------------------------------------------------ */
 /* Responsive                                                          */
 /* ------------------------------------------------------------------ */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .profile-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--space-xl);
+    }
+
+    .profile-container .profile-info {
+        margin-top: 0;
+        align-items: flex-start;
+        text-align: left;
+    }
+
+    .profile-container .avatar {
+        margin: 0;
+        flex-shrink: 0;
+    }
+}
+
 @media (max-width: 1024px) {
     .profile-info {
         align-items: center;
@@ -304,7 +324,7 @@
     }
 
     .profile-info-item {
-        font-size: var(--text-xs);
+        font-size: var(--text-sm);
         flex-direction: row;
         gap: var(--space-xs);
     }
@@ -327,6 +347,6 @@
     }
 
     .profile-info-item {
-        font-size: var(--text-xs);
+        font-size: var(--text-sm);
     }
 }
