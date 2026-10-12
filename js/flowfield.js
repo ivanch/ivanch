@@ -10,6 +10,12 @@
  * Trails are drawn by erasing the previous frame with a low-alpha
  * `destination-out` pass, so the CSS gradient painted behind the canvas
  * element keeps showing through instead of being flooded by an opaque fill.
+ *
+ * Performance notes: particles are bucketed by (tone, width, alpha) and each
+ * bucket is stroked as a single path, so a frame issues roughly a third of
+ * the draw calls of one-per-particle, with no per-frame string allocation.
+ * The loop is capped at ~60 fps so high-refresh displays don't do 2x the
+ * work (the simulation is frame-based, so this also keeps speed consistent).
  */
 
 /* Deterministic PRNG so the noise permutation is stable within a page load. */
@@ -117,6 +123,8 @@ class FlowFieldBackground {
         this.mouse = { x: 0, y: 0, active: false };
         this.rafId = null;
         this.resizeRaf = null;
+        this.lastFrame = 0;
+        this.frameInterval = 1000 / 60;
         this.events = new AbortController();
 
         this.width = 0;
@@ -151,7 +159,40 @@ class FlowFieldBackground {
             { weight: 0.13, rgb: '146, 103, 197', alpha: 0.16 }  // Soft violet
         ];
 
+        this.buildStyleCache();
         this.init();
+    }
+
+    buildStyleCache() {
+        // Colors are dimmed here instead of with a CSS `filter: brightness()`
+        // on the canvas, which would cost a full-screen filter pass per frame.
+        // Additive blending is linear, so the result is nearly identical.
+        const dim = 0.7;
+        const dimRgb = (rgb) => rgb.split(',').map((c) => Math.round(c * dim)).join(', ');
+        for (const tone of this.palette) tone.drawRgb = dimRgb(tone.rgb);
+        const dotRgb = dimRgb('240, 248, 255');
+
+        // Alpha and line width are quantized so particles can share a path.
+        // Steps are small enough that the difference is not visible.
+        this.alphaStep = 0.02;
+        this.alphaLevels = Math.round(1 / this.alphaStep) + 1;
+        this.widthStep = 0.2;
+        this.widthLevels = 10; // covers the 0.4px - 1.8px particle range
+
+        this.strokeStyles = [];
+        for (const tone of this.palette) {
+            for (let a = 0; a < this.alphaLevels; a++) {
+                this.strokeStyles.push(`rgba(${tone.drawRgb}, ${(a * this.alphaStep).toFixed(3)})`);
+            }
+        }
+        this.dotStyles = [];
+        for (let a = 0; a < this.alphaLevels; a++) {
+            this.dotStyles.push(`rgba(${dotRgb}, ${(a * this.alphaStep).toFixed(3)})`);
+        }
+
+        const lineBuckets = this.palette.length * this.widthLevels * this.alphaLevels;
+        this.lineCounts = new Uint16Array(lineBuckets + 1);
+        this.dotCounts = new Uint16Array(this.alphaLevels + 1);
     }
 
     init() {
@@ -231,7 +272,9 @@ class FlowFieldBackground {
 
         this.width = w;
         this.height = h;
-        this.dpr = Math.min(window.devicePixelRatio || 1, 2);
+        // The strokes are faint and soft, so a 1x buffer looks nearly the same
+        // on HiDPI screens while using a quarter of the memory and fill cost.
+        this.dpr = 1;
         this.canvas.width = Math.round(w * this.dpr);
         this.canvas.height = Math.round(h * this.dpr);
         this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
@@ -243,21 +286,28 @@ class FlowFieldBackground {
             this.particles.push(this.createParticle());
         }
 
+        // Scratch buffers for bucketing particles at draw time.
+        this.lineKeys = new Int16Array(count);
+        this.lineOrder = new Uint16Array(count);
+        this.dotKeys = new Int16Array(count);
+        this.dotOrder = new Uint16Array(count);
+
         // Repaint a short exposure so a resize never flashes an empty canvas.
         this.warmup(30);
     }
 
     pickTone() {
         let roll = Math.random();
-        for (const tone of this.palette) {
-            roll -= tone.weight;
-            if (roll <= 0) return tone;
+        for (let i = 0; i < this.palette.length; i++) {
+            roll -= this.palette[i].weight;
+            if (roll <= 0) return i;
         }
-        return this.palette[0];
+        return 0;
     }
 
     createParticle() {
-        const tone = this.pickTone();
+        const toneIndex = this.pickTone();
+        const tone = this.palette[toneIndex];
         const { min, max } = this.config.life;
 
         // 3 Depth layers: 0 (background ambient), 1 (main stream), 2 (foreground highlight)
@@ -289,7 +339,7 @@ class FlowFieldBackground {
             vy: 0,
             speed: this.config.baseSpeed * speedMult * (0.75 + Math.random() * 0.5),
             width: (0.7 + Math.random() * 0.5) * widthMult,
-            rgb: tone.rgb,
+            tone: toneIndex,
             baseAlpha: tone.alpha * (0.75 + Math.random() * 0.5) * alphaMult,
             alpha: 0,
             glow: 0,
@@ -314,7 +364,7 @@ class FlowFieldBackground {
         for (let i = 0; i < count; i++) {
             const angle = Math.random() * Math.PI * 2;
             const speed = 1.0 + Math.random() * 2.2;
-            const tone = this.pickTone();
+            const tone = this.palette[this.pickTone()];
             this.sparks.push({
                 x,
                 y,
@@ -322,7 +372,7 @@ class FlowFieldBackground {
                 py: y,
                 vx: Math.cos(angle) * speed,
                 vy: Math.sin(angle) * speed,
-                rgb: tone.rgb,
+                rgb: tone.drawRgb,
                 size: 0.6 + Math.random() * 0.8,
                 alpha: 0.6 + Math.random() * 0.25,
                 life: 0,
@@ -441,34 +491,99 @@ class FlowFieldBackground {
         this.ctx.fillRect(0, 0, this.width, this.height);
     }
 
+    /* Counting sort: groups particle indices in `order` by their bucket key
+       (keys < 0 are skipped). Afterwards counts[k] is the end offset of
+       bucket k, and bucket k starts where bucket k - 1 ends. */
+    sortByKey(keys, n, counts, order) {
+        counts.fill(0);
+        for (let i = 0; i < n; i++) {
+            if (keys[i] >= 0) counts[keys[i] + 1]++;
+        }
+        for (let k = 1; k < counts.length; k++) counts[k] += counts[k - 1];
+        for (let i = 0; i < n; i++) {
+            const k = keys[i];
+            if (k >= 0) order[counts[k]++] = i;
+        }
+    }
+
     drawParticles() {
         const ctx = this.ctx;
-        // Additive blending gives a soft glow where currents overlap.
-        ctx.globalCompositeOperation = 'lighter';
-        ctx.lineCap = 'round';
+        const particles = this.particles;
+        const n = particles.length;
+        const { alphaStep, alphaLevels, widthStep, widthLevels, lineKeys, dotKeys } = this;
+        const glowBoost = this.config.glowBoost;
 
-        for (const p of this.particles) {
+        for (let i = 0; i < n; i++) {
+            const p = particles[i];
+            lineKeys[i] = -1;
+            dotKeys[i] = -1;
             if (p.fresh) {
                 p.fresh = false;
                 continue;
             }
-            const alpha = Math.min(1, p.alpha + p.glow * this.config.glowBoost);
-            if (alpha <= 0.005) continue;
+            const alpha = Math.min(1, p.alpha + p.glow * glowBoost);
+            const a = Math.round(alpha / alphaStep);
+            if (a === 0) continue;
 
-            ctx.strokeStyle = `rgba(${p.rgb}, ${alpha.toFixed(3)})`;
-            ctx.lineWidth = p.width;
-            ctx.beginPath();
-            ctx.moveTo(p.px, p.py);
-            ctx.lineTo(p.x, p.y);
-            ctx.stroke();
+            const w = Math.min(widthLevels - 1, Math.round(p.width / widthStep));
+            lineKeys[i] = (p.tone * widthLevels + w) * alphaLevels + a;
 
-            // Draw a subtle bright dot at the head of foreground particles
+            // A subtle bright dot at the head of foreground particles
             if (p.depth === 2 && (p.glow > 0.1 || Math.random() < 0.12)) {
-                ctx.fillStyle = `rgba(240, 248, 255, ${(alpha * 0.75).toFixed(3)})`;
+                dotKeys[i] = Math.round((alpha * 0.75) / alphaStep);
+            }
+        }
+
+        // Additive blending gives a soft glow where currents overlap. It is
+        // also order-independent, so batching does not change the result.
+        ctx.globalCompositeOperation = 'lighter';
+        ctx.lineCap = 'round';
+
+        const lineCounts = this.lineCounts;
+        const lineOrder = this.lineOrder;
+        this.sortByKey(lineKeys, n, lineCounts, lineOrder);
+        let start = 0;
+        for (let k = 0; k < lineCounts.length - 1; k++) {
+            const end = lineCounts[k];
+            if (end === start) continue;
+
+            const a = k % alphaLevels;
+            const toneWidth = (k - a) / alphaLevels;
+            const w = toneWidth % widthLevels;
+            const tone = (toneWidth - w) / widthLevels;
+
+            ctx.strokeStyle = this.strokeStyles[tone * alphaLevels + a];
+            ctx.lineWidth = w * widthStep;
+            ctx.beginPath();
+            for (let j = start; j < end; j++) {
+                const p = particles[lineOrder[j]];
+                ctx.moveTo(p.px, p.py);
+                ctx.lineTo(p.x, p.y);
+            }
+            ctx.stroke();
+            start = end;
+        }
+
+        const dotCounts = this.dotCounts;
+        const dotOrder = this.dotOrder;
+        this.sortByKey(dotKeys, n, dotCounts, dotOrder);
+        start = 0;
+        for (let a = 0; a < dotCounts.length - 1; a++) {
+            const end = dotCounts[a];
+            if (end === start) continue;
+
+            if (a > 0) {
+                ctx.fillStyle = this.dotStyles[a];
                 ctx.beginPath();
-                ctx.arc(p.x, p.y, p.width * 0.75, 0, Math.PI * 2);
+                for (let j = start; j < end; j++) {
+                    const p = particles[dotOrder[j]];
+                    const r = p.width * 0.75;
+                    ctx.moveTo(p.x + r, p.y);
+                    ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
+                }
                 ctx.fill();
             }
+            start = end;
         }
     }
 
@@ -506,9 +621,15 @@ class FlowFieldBackground {
         }
     }
 
-    animate() {
+    animate(now = performance.now()) {
+        this.rafId = requestAnimationFrame((t) => this.animate(t));
+
+        // Cap at ~60 fps; keep the remainder so 120/144 Hz average out to 60.
+        const elapsed = now - this.lastFrame;
+        if (elapsed < this.frameInterval * 0.9) return;
+        this.lastFrame = now - (elapsed % this.frameInterval);
+
         this.step(true);
-        this.rafId = requestAnimationFrame(() => this.animate());
     }
 }
 

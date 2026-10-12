@@ -59,7 +59,6 @@ img {
     border-top: 1px solid var(--glass-border);
     border-bottom: 1px solid var(--glass-border);
     box-shadow: var(--shadow-lg), var(--inset-shadow);
-    will-change: box-shadow;
     animation: glass-shadow 10s ease-in-out infinite;
 }
 
