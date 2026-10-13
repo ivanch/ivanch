@@ -1,0 +1,35 @@
+/*
+* Remix Icon v3.5.0 (subset)
+* https://remixicon.com
+* Released under the Apache License Version 2.0
+*
+* Only the icons used by the site are included. The font file is a subset of
+* remixicon.woff2 that contains just these glyphs. To add an icon, copy its
+* rule from the full remixicon.css and re-subset the font with its codepoint.
+*/
+@font-face {
+  font-family: "remixicon";
+  src: url("../assets/fonts/remixicon-subset.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+[class^="ri-"], [class*=" ri-"] {
+  font-family: 'remixicon' !important;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.ri-article-line:before { content: "\ea7e"; }
+.ri-briefcase-line:before { content: "\eaf5"; }
+.ri-building-2-fill:before { content: "\eb08"; }
+.ri-git-repository-fill:before { content: "\edc6"; }
+.ri-github-fill:before { content: "\edca"; }
+.ri-global-line:before { content: "\edcf"; }
+.ri-graduation-cap-fill:before { content: "\f332"; }
+.ri-home-5-line:before { content: "\ee1f"; }
+.ri-linkedin-fill:before { content: "\eeb5"; }
+.ri-mail-fill:before { content: "\eef3"; }
+.ri-terminal-box-line:before { content: "\f1f6"; }

@@ -8,10 +8,12 @@
     pointer-events: none;
     overflow: hidden;
     background: rgba(0, 0, 0, 0.88);
+    /* Colors are pre-dimmed (x0.7) rather than using `filter: brightness()`,
+       which would re-filter the whole animated canvas every frame. The
+       particle colors get the same treatment in js/flowfield.js. */
     background-image:
-        radial-gradient(120% 100% at 50% 0%, rgba(20, 24, 48, 0.55) 0%, rgba(0, 0, 0, 0) 60%),
-        linear-gradient(135deg, rgba(0, 0, 0, 0.9) 0%, rgba(18, 18, 38, 0.72) 100%);
-    filter: brightness(0.7) saturate(1.05);
+        radial-gradient(120% 100% at 50% 0%, rgba(14, 17, 34, 0.55) 0%, rgba(0, 0, 0, 0) 60%),
+        linear-gradient(135deg, rgba(0, 0, 0, 0.9) 0%, rgba(13, 13, 27, 0.72) 100%);
 }
 
 /* CSS only on phones/tablets and for reduced motion: no canvas work. */
@@ -35,10 +37,6 @@
     .homelab-background::after,
     .homelab-title {
         animation: none;
-    }
-
-    .main-container .glass {
-        will-change: auto;
     }
 
     /* Avoid blur compositing work while scrolling. */
