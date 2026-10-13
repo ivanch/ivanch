@@ -49,8 +49,8 @@ A few things I've sent out into the world:
 
 | Project | What it does |
 | :--- | :--- |
-| **[OpenCand](https://github.com/ivanch/opencand)** | Search and explore Brazilian candidate data with .NET Core and React. → [Visit the app](https://opencand.ivanch.me) |
-| **[Vision Start](https://github.com/ivanch/vision-start)** | A customizable Chrome startpage with a glassmorphism look. |
-| **[Kasbot](https://github.com/ivanch/kasbot)** | A Discord bot inspired by a Brazilian DJ. |
-| **[Candlebright](https://github.com/ivanch/candlebright)** | A game project written in C++. |
+| **[OpenCand](https://github.com/ivanch/opencand)** | Search and explore Brazilian candidate data with .NET Core and React |
+| **[Vision Start](https://github.com/ivanch/vision-start)** | A customizable Chrome startpage with a glassmorphism look |
+| **[Kasbot](https://github.com/ivanch/kasbot)** | A Discord bot inspired by a Brazilian DJ |
+| **[Candlebright](https://github.com/ivanch/candlebright)** | A game project written in C++ |
 | **[Haven](https://github.com/ivanch/haven)** | My personal homelab (now with GitOps!) |
