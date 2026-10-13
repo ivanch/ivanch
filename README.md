@@ -5,15 +5,15 @@
      | | \ V / (_| | | | | (__| | | |
      |_|  \_/ \__,_|_| |_|\___|_| |_|
 
-  software, servers, and a little sorcery.
+  software, servers, and a little sorcery
 ```
 
 <p align="center">
   <a href="https://ivanch.me"><img alt="Website" src="https://img.shields.io/badge/Website-ivanch.me-4FC3F7?style=for-the-badge&logo=googlechrome&logoColor=white"></a>
   <a href="https://github.com/ivanch"><img alt="GitHub" src="https://img.shields.io/badge/GitHub-ivanch-181717?style=for-the-badge&logo=github&logoColor=white"></a>
-  <a href="https://git.ivanch.me/ivanch"><img alt="Gitea" src="https://img.shields.io/badge/Gitea-ivanch-609926?style=for-the-badge&logo=gitea&logoColor=white"></a>
-  <a href="https://blog.ivanch.me"><img alt="Blog" src="https://img.shields.io/badge/Blog-blog.ivanch.me-667EEA?style=for-the-badge"></a>
-  <a href="https://www.linkedin.com/in/joseivanch/"><img alt="LinkedIn" src="https://img.shields.io/badge/LinkedIn-joseivanch-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white"></a>
+  <a href="https://git.ivanch.me/ivanch"><img alt="Gitea" src="https://img.shields.io/badge/-Gitea-609926?style=for-the-badge&logo=gitea&logoColor=white"></a>
+  <a href="https://blog.ivanch.me"><img alt="Blog" src="https://img.shields.io/badge/-Blog-667EEA?style=for-the-badge"></a>
+  <a href="https://www.linkedin.com/in/joseivanch/"><img alt="LinkedIn" src="https://img.shields.io/badge/-LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white"></a>
 </p>
 
 ---
@@ -28,7 +28,7 @@ My corner of the internet is part portfolio, part doorway into the homelab.
 
 ```text
 interests
-|-- building robust software
+|-- building robust and maintainable software
 |-- making CI/CD do the repetitive work
 |-- orchestrating containers with Kubernetes
 `-- self-hosting, tinkering, and open source
@@ -53,59 +53,4 @@ A few things I've sent out into the world:
 | **[Vision Start](https://github.com/ivanch/vision-start)** | A customizable Chrome startpage with a glassmorphism look. |
 | **[Kasbot](https://github.com/ivanch/kasbot)** | A Discord bot inspired by a Brazilian DJ. |
 | **[Candlebright](https://github.com/ivanch/candlebright)** | A game project written in C++. |
-
-## `$ ssh homelab`
-
-Meet **[Haven](https://github.com/ivanch/haven)**: my personal homelab,
-where bare-metal Kubernetes meets Docker containers and the occasional experiment.
-
-```text
-              .-------------------.
-              |       Haven       |
-              |  bare metal / k3s |
-              '---------+---------'
-                        |
-              .---------+---------.
-              |                   |
-         deployments         server scripts
-```
-
-→ [Explore the deployments](https://github.com/ivanch/haven) · [Browse the scripts](https://git.ivanch.me/ivanch/server-scripts)
-
-## `$ cat site.txt`
-
-This repository is the source for **[ivanch.me](https://ivanch.me)**:
-a static homepage with glass panels, a canvas flow field, and links to the things I build.
-HTML, CSS, and vanilla JavaScript keep it small; Nginx serves it in production.
-
-```text
-.
-|-- index.html          # the front door
-|-- 404.html            # for the scenic detours
-|-- assets/             # avatar, favicon, and fonts
-|-- css/                # layout, glass, and color tokens
-|-- js/                 # canvas backgrounds and social interactions
-|-- utils/              # one-off helper scripts
-|-- Dockerfile          # minify JavaScript, then serve with Nginx
-|-- nginx.conf          # caching, compression, and routing
-`-- .gitea/workflows/   # build and deploy
-```
-
-## `$ cat contact.txt`
-
-<p>
-  <a href="https://www.linkedin.com/in/joseivanch/"><img alt="LinkedIn" src="https://img.shields.io/badge/-LinkedIn-0A66C2?style=flat-square&logo=linkedin&logoColor=white"></a>
-  <a href="https://github.com/ivanch"><img alt="GitHub" src="https://img.shields.io/badge/-GitHub-181717?style=flat-square&logo=github&logoColor=white"></a>
-  <a href="https://git.ivanch.me/ivanch"><img alt="Gitea" src="https://img.shields.io/badge/-Gitea-609926?style=flat-square&logo=gitea&logoColor=white"></a>
-  <a href="https://blog.ivanch.me"><img alt="Blog" src="https://img.shields.io/badge/-Blog-667EEA?style=flat-square"></a>
-</p>
-
-```text
-ivanch@home:~$ _
-```
-
----
-
-<p align="center">
-  <sub>Built with plain HTML, CSS & JavaScript · served by Nginx · shipped by Gitea Actions</sub>
-</p>
+| **[Haven](https://github.com/ivanch/haven)** | My personal homelab (now with GitOps!) |
